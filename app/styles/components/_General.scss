@@ -1,4 +1,23 @@
+body{
+  background-color: #142133;
+}
+
+h1,
+h2{
+  color: #fffdd0;
+}
+
 .center{
   margin: 0 auto;
   text-align: center;
+}
+
+.outline{
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.icon-btn{
+  cursor: pointer;
 }

@@ -13,11 +13,11 @@ class Critter extends React.Component{
   }
 
   render(){
-    let color = this.props.alive == 1 ? "blue" : "red";
+    let color = this.props.alive == 1 ? "blue" : "white";
     let  cssClasses = ` ${color} cell`;
     return (
       <div className = {cssClasses} onClick = {() => this.props.onClick()}>
-        {this.props.alive}
+
       </div>
     );
   }
