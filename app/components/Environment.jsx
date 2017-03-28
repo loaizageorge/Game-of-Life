@@ -41,10 +41,10 @@ class Environment extends React.Component{
 
   // Make a multidimensional array, where each row of Cells
   // is an array filled with inactive cells
-  makeInitialGrid(dimension){
+  makeInitialGrid(dimensions){
     var grid = [];
-    for (var x = 0; x < dimension; x++){
-      grid.push(Array(dimension).fill(0));
+    for (var x = 0; x < dimensions; x++){
+      grid.push(Array(dimensions).fill(0));
     }
     return grid;
 
@@ -86,12 +86,12 @@ class Environment extends React.Component{
     var nextGrid = [];
     // If this stays 0, stop the timer (no more generations)
     var nextGenAliveCells = 0;
-    var dimension = this.state.dimension;
+    var dimensions = this.state.dimensions;
     // Calculate the next state of each cell by checking it's neighbor cells
     // and applying the game of life rules.
-    for (var i = 0; i < dimension; i++){
+    for (var i = 0; i < dimensions; i++){
       var column = [];
-      for(var j = 0; j < dimension; j++){
+      for(var j = 0; j < dimensions; j++){
         var neighboringCells = this.createNeighborCells(i,j);
         var numOfAliveNeighbors = this.checkAliveCells(neighboringCells);
         var currentCellState = grid[i][j];
@@ -139,9 +139,9 @@ class Environment extends React.Component{
 
   // Doesn't support wrapping around the grid, so out of bounds neighbors are ignored.
   checkBoundries(xPos,yPos){
-    var dimension = this.state.dimension;
-    var xBoundary = dimension;
-    var yBoundary = dimension;
+    var dimensions = this.state.dimensions;
+    var xBoundary = dimensions;
+    var yBoundary = dimensions;
 
     if( xPos > -1 && xPos < xBoundary && yPos > -1 && yPos < yBoundary){
       return true;
@@ -182,8 +182,8 @@ class Environment extends React.Component{
 
   resetBoard(){
     clearInterval(this.countdown);
-    var dimension = this.state.dimension;
-    var initialGrid = this.makeInitialGrid(dimension);
+    var dimensions = this.state.dimensions;
+    var initialGrid = this.makeInitialGrid(dimensions);
     this.setState({
       grid: initialGrid,
       generation: 0
@@ -201,11 +201,11 @@ class Environment extends React.Component{
 
   randomlyFillBoard(){
     var randomGrid = [];
-    var dimension = this.state.dimension;
-    
-    for (var x = 0; x < dimension; x++){
+    var dimensions = this.state.dimensions;
+
+    for (var x = 0; x < dimensions; x++){
       var row = [];
-      for ( var y = 0; y < dimension; y++){
+      for ( var y = 0; y < dimensions; y++){
         row.push(Math.round(Math.random()));
       }
       randomGrid.push(row);
