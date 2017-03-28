@@ -5,22 +5,22 @@ import {Button} from 'react-bootstrap';
 class Environment extends React.Component{
   constructor(props){
     super(props);
-
-    this.gridDimensions = {
-      width: 20,
-      height: 20
-    }
+    // Grid is a square, so both width and height are the same.
+    this.gridTypes = {
+      small: 15,
+      large: 20
+    };
 
     this.neighbors = [
       [-1,-1] , [0,-1] , [1,-1],
       [-1,0]  ,        , [1,0],
       [-1,1]  , [0,1]  , [1,1]
     ];
-
+    // Allows for setInterval to be cleared and started from anywhere
     this.countdown = "";
 
+    // Binding
     this.makeInitialGrid.bind(this);
-
     this.renderSquares.bind(this);
     this.renderSquare.bind(this);
     this.createNextGen.bind(this)
@@ -31,18 +31,20 @@ class Environment extends React.Component{
     //this.updateState.bind(this);
 
     this.state = {
-      grid: this.makeInitialGrid(this.gridDimensions.width,this.gridDimensions.height),
-      generation: 0
+      dimensions: this.gridTypes.small,
+      generation: 0,
+      grid: this.makeInitialGrid(this.gridTypes.small),
+      size : "small",
     }
 
   }
 
   // Make a multidimensional array, where each row of Cells
-  // is an array filled with dead cells
-  makeInitialGrid(width,height){
+  // is an array filled with inactive cells
+  makeInitialGrid(dimension){
     var grid = [];
-    for (var x = 0; x < width; x++){
-      grid.push(Array(height).fill(0));
+    for (var x = 0; x < dimension; x++){
+      grid.push(Array(dimension).fill(0));
     }
     return grid;
 
@@ -53,13 +55,13 @@ class Environment extends React.Component{
     squares[row][column] = squares[row][column] == 1 ? 0 : 1;
     this.setState({
       grid:squares
-
     });
   }
 
   renderSquares(row,xPos){
-    // Iterate throught the grid state, which simply keeps track of if a cell is alive ("1") or dead ("0")
-    // and return a div grid passing the active prop to the cell child component
+    // Iterate throught the grid, which simply keeps track of if a cell is
+    // inactive/active (0/1). Create another grid filled with Critter components
+    // which are styled accordingly.
     var grid = [];
     var initialGrid = this.state.grid;
     for( let yPos = 0; yPos < row.length; yPos++){
@@ -76,29 +78,43 @@ class Environment extends React.Component{
 
   renderSquare(xPos,yPos,alive){
     var coordinates = xPos.toString() + yPos.toString();
-    return (<Critter key = {coordinates} coordinates = {coordinates} onClick = {() => this.handleClick(xPos,yPos)} x = {xPos} y ={yPos} alive = {alive} />);
+    return (<Critter key = {coordinates} boardSize = {this.state.size} coordinates = {coordinates} onClick = {() => this.handleClick(xPos,yPos)} x = {xPos} y ={yPos} alive = {alive} />);
   }
 
   createNextGen(){
     var grid = this.state.grid;
     var nextGrid = [];
-    for (var i = 0; i < this.gridDimensions.width; i++){
+    // If this stays 0, stop the timer (no more generations)
+    var nextGenAliveCells = 0;
+    var dimension = this.state.dimension;
+    // Calculate the next state of each cell by checking it's neighbor cells
+    // and applying the game of life rules.
+    for (var i = 0; i < dimension; i++){
       var column = [];
-      for(var j = 0; j < this.gridDimensions.height; j++){
+      for(var j = 0; j < dimension; j++){
         var neighboringCells = this.createNeighborCells(i,j);
         var numOfAliveNeighbors = this.checkAliveCells(neighboringCells);
         var currentCellState = grid[i][j];
         var nextState = this.calculateNextState(currentCellState,numOfAliveNeighbors);
+        if( nextState != 0){
+          nextGenAliveCells++;
+        }
         column.push(nextState);
       }
       nextGrid.push(column);
     }
-    var nextGen = this.state.generation;
-    nextGen++;
-    this.setState({
-      grid: nextGrid,
-      generation: nextGen
-    });
+
+    if( nextGenAliveCells == 0 ){
+      this.resetBoard();
+    }
+    else{
+      var nextGen = this.state.generation;
+      nextGen++;
+      this.setState({
+        grid: nextGrid,
+        generation: nextGen
+      });
+    }
   }
 
   createNeighborCells(xPos,yPos){
@@ -121,9 +137,11 @@ class Environment extends React.Component{
     return neighboringCells;
   }
 
+  // Doesn't support wrapping around the grid, so out of bounds neighbors are ignored.
   checkBoundries(xPos,yPos){
-    var xBoundary = this.gridDimensions.width;
-    var yBoundary = this.gridDimensions.height;
+    var dimension = this.state.dimension;
+    var xBoundary = dimension;
+    var yBoundary = dimension;
 
     if( xPos > -1 && xPos < xBoundary && yPos > -1 && yPos < yBoundary){
       return true;
@@ -144,6 +162,7 @@ class Environment extends React.Component{
     return aliveCells.length;
   }
 
+  // Apply the game of life rules
   calculateNextState(currentCellState,numOfAliveNeighbors){
     var count = numOfAliveNeighbors;
     // unchanged
@@ -162,13 +181,13 @@ class Environment extends React.Component{
   }
 
   resetBoard(){
-    var initialGrid = this.makeInitialGrid(this.gridDimensions.width,this.gridDimensions.height);
+    clearInterval(this.countdown);
+    var dimension = this.state.dimension;
+    var initialGrid = this.makeInitialGrid(dimension);
     this.setState({
       grid: initialGrid,
       generation: 0
     });
-  () => {this.resetBoard()}
-
   }
 
   start(){
@@ -180,20 +199,50 @@ class Environment extends React.Component{
 
   }
 
-
+  randomlyFillBoard(){
+    var randomGrid = [];
+    var dimension = this.state.dimension;
+    
+    for (var x = 0; x < dimension; x++){
+      var row = [];
+      for ( var y = 0; y < dimension; y++){
+        row.push(Math.round(Math.random()));
+      }
+      randomGrid.push(row);
+    }
+    this.setState({
+      grid: randomGrid
+    });
+  }
   render(){
-
+    var boardClass = this.state.size == "small" ? "smaller-grid" : "large-grid";
     return (
       <div>
         <h2 className = "center">Current Generation: {this.state.generation}</h2>
-        <div className = "grid">
+        <div className = {boardClass} >
           {this.state.grid.map(this.renderSquares.bind(this))}
         </div>
         <div className = "buttons center">
           <button className = "start" onClick = { () => this.start() }>Start</button>
           <button className = "stop" onClick = { () => this.stop() }>Stop</button>
           <button className = "step" onClick = { () => this.createNextGen()}>Step</button>
-          <button className = "reset" onClick = { () => this.resetBoard()}>Clear Board</button>
+          <button className = "reset" onClick = { () => this.resetBoard()}>Reset Board</button>
+          <button className = "random" onClick = { () => this.randomlyFillBoard()}>Randomize</button>
+          <p>Board Size:</p>
+          <button className = "smallBtn" onClick = { () => {
+              this.setState({
+                dimensions: this.gridTypes.small,
+                grid: this.makeInitialGrid(this.gridTypes.small),
+                size: "small"
+              });
+            }}>Small</button>
+          <button className = "largeBtn" onClick = { () => {
+            this.setState({
+              dimensions: this.gridTypes.large,
+              grid: this.makeInitialGrid(this.gridTypes.large),
+              size: "large"
+            });
+            }}>Large</button>
         </div>
       </div>
     );

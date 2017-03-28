@@ -3,18 +3,12 @@ import $ from 'jquery';
 
 
 class Critter extends React.Component{
-  constructor(props){
-    super(props);
-    this.update = this.update.bind(this);
-  }
-
-  update(){
-    this.props.pass();
-  }
 
   render(){
+
     let color = this.props.alive == 1 ? "blue" : "white";
-    let  cssClasses = ` ${color} cell`;
+    let boardSize = this.props.boardSize == "small" ? "smaller-cell" : "large-cell";
+    let  cssClasses = ` ${color} ${boardSize} `;
     return (
       <div className = {cssClasses} onClick = {() => this.props.onClick()}>
 
@@ -22,4 +16,5 @@ class Critter extends React.Component{
     );
   }
 }
+
 export default Critter;

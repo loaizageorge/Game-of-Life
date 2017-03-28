@@ -1,19 +1,24 @@
-.grid{
-  width: 540px;
-  margin: 0 auto;
-}
-
 .buttons button{
   border-radius: 5px;
   border: none;
   background-color: rgb(111, 108, 133);
   color: #fffdd0;
-  font-size: 2rem;
+  font-size: 1.5rem;
   margin: 1rem;
-  padding: 3px 4px;
+  padding: 7px;
 
 }
 
 .buttons > .reset{
   background-color: red;
+}
+
+.large-grid{
+  width: 540px;
+  margin: 0 auto;
+}
+
+.smaller-grid{
+  width: 300px;
+  margin: 0 auto;
 }
