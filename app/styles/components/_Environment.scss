@@ -1,4 +1,4 @@
-.buttons button{
+/*.buttons button{
   border-radius: 5px;
   border: none;
   background-color: rgb(111, 108, 133);
@@ -7,6 +7,17 @@
   margin: 1rem;
   padding: 7px;
 
+}
+*/
+p{
+  margin-top: 5px;
+}
+
+.buttons{
+  border: 1px solid grey;
+  border-radius: 6px;
+  padding: 1.5rem;
+  text-align: center;
 }
 
 .buttons > .reset{

@@ -3,21 +3,12 @@ body{
 }
 
 h1,
-h2{
+h2,
+p{
   color: #fffdd0;
 }
 
-.center{
-  margin: 0 auto;
+
+h2{
   text-align: center;
-}
-
-.outline{
-  background-color: transparent;
-  border: none;
-  outline: none;
-}
-
-.icon-btn{
-  cursor: pointer;
 }

@@ -221,30 +221,41 @@ class Environment extends React.Component{
         <h2 className = "center">Current Generation: {this.state.generation}</h2>
         <div className = {boardClass} >
           {this.state.grid.map(this.renderSquares.bind(this))}
+          <div className = "buttons center">
+
+            <p>Controls</p>
+            <div className = "btn-group">
+              <button type = "button" className = "btn btn-success start" onClick = { () => this.start() }>Start</button>
+              <button type = "button" className = "btn btn-primary stop" onClick = { () => this.stop() }>Stop</button>
+              <button type = "button" className = "btn step" onClick = { () => this.createNextGen()}>Step</button>
+              <button type = "button" className = "btn btn-danger reset" onClick = { () => this.resetBoard()}>Reset Board</button>
+            </div>
+
+            <p>Board Size</p>
+            <div className = "btn-group">
+              <button type = "button" className = "btn smallBtn" onClick = { () => {
+                  this.setState({
+                    dimensions: this.gridTypes.small,
+                    grid: this.makeInitialGrid(this.gridTypes.small),
+                    size: "small"
+                  });
+                }}>Small</button>
+              <button type = "button" className = "btn largeBtn" onClick = { () => {
+                this.setState({
+                  dimensions: this.gridTypes.large,
+                  grid: this.makeInitialGrid(this.gridTypes.large),
+                  size: "large"
+                });
+                }}>Large</button>
+            </div>
+
+              <p>Patterns</p>
+              <div className = "btn-group">
+                <button type = "button" className = "btn random" onClick = { () => this.randomlyFillBoard()}>Random</button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className = "buttons center">
-          <button className = "start" onClick = { () => this.start() }>Start</button>
-          <button className = "stop" onClick = { () => this.stop() }>Stop</button>
-          <button className = "step" onClick = { () => this.createNextGen()}>Step</button>
-          <button className = "reset" onClick = { () => this.resetBoard()}>Reset Board</button>
-          <button className = "random" onClick = { () => this.randomlyFillBoard()}>Randomize</button>
-          <p>Board Size:</p>
-          <button className = "smallBtn" onClick = { () => {
-              this.setState({
-                dimensions: this.gridTypes.small,
-                grid: this.makeInitialGrid(this.gridTypes.small),
-                size: "small"
-              });
-            }}>Small</button>
-          <button className = "largeBtn" onClick = { () => {
-            this.setState({
-              dimensions: this.gridTypes.large,
-              grid: this.makeInitialGrid(this.gridTypes.large),
-              size: "large"
-            });
-            }}>Large</button>
-        </div>
-      </div>
     );
   }
 }
