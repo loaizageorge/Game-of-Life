@@ -42,7 +42,7 @@ class Board extends React.Component{
 
   // Make a multidimensional array, where each row of Cells
   // is an array filled with inactive cells
-  // TODO: MOVE UP
+
   makeInitialGrid(dimensions){
     var grid = [];
     for (var x = 0; x < dimensions; x++){
@@ -51,7 +51,7 @@ class Board extends React.Component{
     return grid;
 
   }
-  // TODO: MOVE UP
+
   handleClick(row,column){
     let squares = this.state.grid.slice();
     squares[row][column] = squares[row][column] == 1 ? 0 : 1;
@@ -180,7 +180,7 @@ class Board extends React.Component{
     }
     return currentCellState;
   }
-  // TODO: MOVE UP
+
   resetBoard(){
     clearInterval(this.countdown);
     var dimensions = this.state.dimensions;
@@ -190,11 +190,11 @@ class Board extends React.Component{
       generation: 0
     });
   }
-  // TODO: MOVE UP
+
   start(){
     this.countdown = setInterval(this.createNextGen.bind(this),100);
   }
-  // TODO: MOVE UP
+  
   stop(){
     clearInterval(this.countdown);
 
