@@ -1,0 +1,20 @@
+@import "components/General";
+
+.buttons{
+  text-align: center;
+  border: 1px solid $font-color;
+}
+
+.btn-group{
+  margin-bottom: 10px;
+}
+
+.large-grid{
+  width: 540px;
+  margin: 0 auto;
+}
+
+.smaller-grid{
+  width: 300px;
+  margin: 0 auto;
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import $ from 'jquery';
 
 
-class Critter extends React.Component{
+class Cell extends React.Component{
 
   render(){
 
@@ -17,4 +17,4 @@ class Critter extends React.Component{
   }
 }
 
-export default Critter;
+export default Cell;

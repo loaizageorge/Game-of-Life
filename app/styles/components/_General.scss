@@ -1,3 +1,5 @@
+$font-color: #fffdd0;
+
 body{
   background-color: #142133;
 }
@@ -5,10 +7,38 @@ body{
 h1,
 h2,
 p{
-  color: #fffdd0;
+  color: $font-color;
 }
 
+h1{
+  display: inline;
+  vertical-align: top;
+}
+
+.header{
+  display: block;
+  background-color: #800020;
+  text-align: center;
+}
 
 h2{
   text-align: center;
+}
+
+.icon{
+  font-size: 50px;
+  vertical-align: top;
+}
+
+.footer{
+  display: block;
+  margin-top: 20px;
+  background-color: #800020;
+  text-align: center;
+
+}
+
+.footer a {
+  margin-right: 5px;
+  color: black;
 }

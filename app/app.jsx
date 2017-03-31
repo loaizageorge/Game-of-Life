@@ -2,7 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import GameOfLife from 'GameOfLife';
+import Board from 'Board';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -11,6 +11,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'style!css!sass!applicationStyles';
 
 ReactDOM.render(
-<GameOfLife/>,
+<Board/>,
   document.getElementById('app')
 );

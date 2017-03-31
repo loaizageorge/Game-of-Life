@@ -1,8 +1,9 @@
 import React from 'react';
-import Critter from 'Critter';
-import {Button} from 'react-bootstrap';
+import Cell from 'Cell';
+import Footer from 'Footer';
 
-class Environment extends React.Component{
+
+class Board extends React.Component{
   constructor(props){
     super(props);
     // Grid is a square, so both width and height are the same.
@@ -41,6 +42,7 @@ class Environment extends React.Component{
 
   // Make a multidimensional array, where each row of Cells
   // is an array filled with inactive cells
+  // TODO: MOVE UP
   makeInitialGrid(dimensions){
     var grid = [];
     for (var x = 0; x < dimensions; x++){
@@ -49,7 +51,7 @@ class Environment extends React.Component{
     return grid;
 
   }
-
+  // TODO: MOVE UP
   handleClick(row,column){
     let squares = this.state.grid.slice();
     squares[row][column] = squares[row][column] == 1 ? 0 : 1;
@@ -59,8 +61,8 @@ class Environment extends React.Component{
   }
 
   renderSquares(row,xPos){
-    // Iterate throught the grid, which simply keeps track of if a cell is
-    // inactive/active (0/1). Create another grid filled with Critter components
+    // Iterate through the grid, which simply keeps track of if a cell is
+    // inactive/active (0/1). Create another grid filled with Cell components
     // which are styled accordingly.
     var grid = [];
     var initialGrid = this.state.grid;
@@ -78,7 +80,7 @@ class Environment extends React.Component{
 
   renderSquare(xPos,yPos,alive){
     var coordinates = xPos.toString() + yPos.toString();
-    return (<Critter key = {coordinates} boardSize = {this.state.size} coordinates = {coordinates} onClick = {() => this.handleClick(xPos,yPos)} x = {xPos} y ={yPos} alive = {alive} />);
+    return (<Cell key = {coordinates} boardSize = {this.state.size} coordinates = {coordinates} onClick = {() => this.handleClick(xPos,yPos)} x = {xPos} y ={yPos} alive = {alive} />);
   }
 
   createNextGen(){
@@ -147,7 +149,6 @@ class Environment extends React.Component{
       return true;
     }
     return false;
-
   }
 
   checkAliveCells(neighborCells){
@@ -179,7 +180,7 @@ class Environment extends React.Component{
     }
     return currentCellState;
   }
-
+  // TODO: MOVE UP
   resetBoard(){
     clearInterval(this.countdown);
     var dimensions = this.state.dimensions;
@@ -189,11 +190,11 @@ class Environment extends React.Component{
       generation: 0
     });
   }
-
+  // TODO: MOVE UP
   start(){
     this.countdown = setInterval(this.createNextGen.bind(this),100);
   }
-
+  // TODO: MOVE UP
   stop(){
     clearInterval(this.countdown);
 
@@ -218,6 +219,10 @@ class Environment extends React.Component{
     var boardClass = this.state.size == "small" ? "smaller-grid" : "large-grid";
     return (
       <div>
+        <div className = "header">
+          <h1>Game of Life</h1>
+          <i className = "icon devicon-react-original-wordmark colored"></i>
+        </div>
         <h2 className = "center">Current Generation: {this.state.generation}</h2>
         <div className = {boardClass} >
           {this.state.grid.map(this.renderSquares.bind(this))}
@@ -225,9 +230,9 @@ class Environment extends React.Component{
 
             <p>Controls</p>
             <div className = "btn-group">
-              <button type = "button" className = "btn btn-success start" onClick = { () => this.start() }>Start</button>
-              <button type = "button" className = "btn btn-primary stop" onClick = { () => this.stop() }>Stop</button>
-              <button type = "button" className = "btn step" onClick = { () => this.createNextGen()}>Step</button>
+              <button type = "button" className = "btn btn-default start" onClick = { () => this.start() }>Start</button>
+              <button type = "button" className = "btn btn-default stop" onClick = { () => this.stop() }>Stop</button>
+              <button type = "button" className = "btn btn-default step" onClick = { () => this.createNextGen()}>Step</button>
               <button type = "button" className = "btn btn-danger reset" onClick = { () => this.resetBoard()}>Reset Board</button>
             </div>
 
@@ -255,9 +260,10 @@ class Environment extends React.Component{
               </div>
             </div>
           </div>
+          <Footer/>
         </div>
     );
   }
 }
 
-export default Environment;
+export default Board;
